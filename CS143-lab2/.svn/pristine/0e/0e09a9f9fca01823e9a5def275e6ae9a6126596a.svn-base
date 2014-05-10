@@ -1,0 +1,60 @@
+package simpledb;
+
+import java.util.NoSuchElementException;
+
+/** 
+ * Helper for implementing DbFileIterators. Handles hasNext()/next() logic. 
+ * You can use this to implement iterators for:
+ * - BPlusTreeFile
+ * - ExHashFile
+ * - Filter
+ * - HeapFile
+ * */
+public abstract class AbstractDbFileIterator implements DbFileIterator {
+
+	private Tuple m_next = null;
+	 
+	/**
+	 * @return true if this iterator has more Tuples, false otherwise.
+	 */
+	public boolean hasNext() throws DbException, TransactionAbortedException {
+        if (m_next == null) {
+        	m_next = readNext();
+        }
+        return m_next != null;
+    }
+
+	/**
+	 * Read the next tuple and return it.
+	 * @throws NoSuchElementException If there are no tuples left.
+	 */
+    public Tuple next() throws DbException, TransactionAbortedException,
+            NoSuchElementException {
+        if (m_next == null) {
+            m_next = readNext();
+            if (m_next == null) {
+            	throw new NoSuchElementException();
+            }
+        }
+
+        Tuple result = m_next;
+        m_next = null;
+        return result;
+    }
+
+    /** 
+     * If subclasses override this, they should call super.close(). 
+     */
+    public void close() {
+        // Ensures that a future call to next() will fail
+        m_next = null;
+    }
+
+    /** 
+     * Reads the next tuple from the underlying source.
+     * @return the next Tuple in the iterator, null if the iteration is finished. 
+     */
+    protected abstract Tuple readNext() throws DbException, TransactionAbortedException;
+
+   
+}

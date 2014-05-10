@@ -1,0 +1,160 @@
+ 
+Q1
+CA|Los Angeles|9818605
+IL|Cook|5194675
+TX|Harris|4092459
+AZ|Maricopa|3817117
+CA|San Diego|3095313
+CA|Orange|3010232
+NY|Kings|2504700
+FL|Miami-Dade|2496435
+TX|Dallas|2368139
+NY|Queens|2230722
+CA|Riverside|2189641
+CA|San Bernardino|2035210
+ 
+Q2
+DE|3
+HI|5
+RI|5
+CT|8
+NH|10
+MA|14
+VT|14
+AZ|15
+ME|16
+NV|17
+NJ|21
+WY|23
+MD|24
+AK|29
+UT|29
+NM|33
+OR|36
+WA|39
+ID|44
+SC|46
+ND|53
+WV|55
+MT|57
+CA|58
+NY|62
+CO|64
+LA|64
+SD|66
+AL|67
+FL|67
+PA|67
+WI|72
+AR|75
+OK|77
+MS|82
+MI|83
+MN|87
+OH|88
+IN|92
+NE|93
+TN|95
+IA|99
+NC|100
+IL|102
+KS|105
+MO|115
+KY|120
+VA|136
+GA|159
+TX|254
+ 
+Q3
+62.9
+ 
+Q4
+25
+ 
+Q5
+AZ
+CT
+ 
+Q6
+9
+ 
+Q7
+AK|1959|Lisa Murkowski|1957
+HI|1959|Daniel Akaka|1924
+HI|1959|Daniel Inouye|1924
+ 
+Q8
+Barbour|3156
+Boone|8544
+Braxton|3559
+Brooke|2835
+Cabell|11716
+Calhoun|2632
+Clay|5575
+Doddridge|824
+Fayette|36404
+Gilmer|1053
+Greenbrier|3815
+Hancock|3712
+Harrison|16197
+Kanawha|46566
+Lewis|4702
+Lincoln|746
+Logan|40648
+McDowell|76774
+Marion|15103
+Marshall|3786
+Mercer|12749
+Mingo|20570
+Nicholas|1463
+Ohio|27229
+Pendleton|1618
+Pocahontas|3761
+Raleigh|17414
+Randolph|1153
+Ritchie|2086
+Roane|3482
+Summers|5256
+Taylor|1527
+Tucker|3459
+Tyler|1327
+Webster|8734
+Wetzel|3571
+Wyoming|13744
+ 
+Q9
+MI
+RI
+WA
+ 
+Q10
+AL
+AZ
+GA
+ID
+IN
+KS
+KY
+ME
+MS
+NV
+OK
+SC
+TN
+TX
+UT
+WY
+ 
+Q11
+APR|Daniel Inouye|APR3|Daniel Inouye
+ 
+Q12
+ANF|Debbie Stabenow|1950|ANF1|Ben Nelson|1941
+CST|Jay Rockefeller|1937|CST7|Frank Lautenberg|1924
+ENV|Barbara Boxer|1940|ENV5|Frank Lautenberg|1924
+FIN|Max Baucus|1941|FIN3|Jay Rockefeller|1937
+FOR|John Kerry|1943|FOR5|Barbara Boxer|1940
+HEA|Tom Harkin|1939|HEA2|Barbara Mikulski|1936
+HSC|Joe Lieberman|1942|HSC4|Carl Levin|1934
+HSC|Joe Lieberman|1942|HSC5|Daniel Akaka|1924
+JUD|Patrick Leahy|1940|JUD2|Herb Kohl|1935
