@@ -18,42 +18,73 @@
  from most populated to least
  ******************************************************************************/
 
-/* Put your SQL for Q1 here */
+SELECT statecode, name, population_2010
+FROM counties
+WHERE population_2010 > 2000000
+ORDER BY population_2010 DESC;
 
 /*******************************************************************************
  Q2 - Return a list of statecodes and the number of counties in that state,
  ordered from the least number of counties to the most 
 *******************************************************************************/
 
-/* Put your SQL for Q2 here */
+SELECT statecode, COUNT(*) as numCounties
+FROM counties C
+GROUP BY statecode
+ORDER BY numCounties DESC; --Sanity check, there are 50 rows returned
 
 /*******************************************************************************
  Q3 - On average how many counties are there per state (return a single real
  number) 
 *******************************************************************************/
 
-/* Put your SQL for Q3 here */
+SELECT -- woooo
+	AVG(sc.county_count)
+FROM (
+	SELECT COUNT(*) as county_count
+	FROM counties C 
+	GROUP BY C.statecode ) as sc;
 
 /*******************************************************************************
  Q4 - return a count of how many states have more than the average number of
  counties
 *******************************************************************************/
 
-/* Put your SQL for Q4 here */
+SELECT COUNT(*)
+FROM (
+	SELECT COUNT(*) as county_count
+	FROM counties C 
+	GROUP BY C.statecode 
+	HAVING county_count > ( 
+		SELECT AVG(sc.county_count)
+		FROM (
+			SELECT COUNT(*) as county_count
+			FROM counties C 
+			GROUP BY C.statecode ) as sc) ) test;
+
 
 /*******************************************************************************
  Q5 - Data Cleaning - return the statecodes of states whose 2010 population does
  not equal the sum of the 2010 populations of their counties
 *******************************************************************************/
 
-/* Put your SQL for Q5 here */
+SELECT S.statecode, S.population_2010
+FROM states S
+WHERE S.population_2010 <> (	SELECT SUM(C.population_2010)
+						FROM counties C
+						GROUP BY C.statecode
+						HAVING C.statecode = S.statecode);
+
 
 /*******************************************************************************
  Q6 - How many states have at least one senator whose first name is John,
  Johnny, or Jon? Return a single integer
 *******************************************************************************/
 
-/* Put your SQL for Q6 here */
+SELECT COUNT(DISTINCT S.statecode)
+FROM senators S
+WHERE S.name LIKE 'John %' OR S.name LIKE 'Johnny %' OR S.name LIKE 'Jon %';
+
 
 /*******************************************************************************
 Q7 - Find all the senators who were born in a year before the year their state
@@ -63,6 +94,9 @@ SQLite you can extract the year as an integer using the following:
 "cast(strftime('%Y',admitted_to_union) as integer)"
 *******************************************************************************/
 
+SELECT St.statecode, St.admitted_to_union, Se.name, Se.born
+FROM states St, senators Se
+WHERE St.statecode = Se.statecode AND YEAR(St.admitted_to_union) > Se.born;
 
 /*******************************************************************************
 Q8 - Find all the counties of West Virginia (statecode WV) whose population
@@ -70,21 +104,36 @@ shrunk between 1950 and 2010, and for each, return the name of the county and
 the number of people who left during that time (as a positive number).
 *******************************************************************************/
 
-/* Put your SQL for Q8 here */
+SELECT C.name, (C.population_1950 - C.population_2010) AS Fewer_People
+FROM counties C
+WHERE C.statecode LIKE 'WV' and C.population_1950 > C.population_2010;
+
 
 /*******************************************************************************
 Q9 - Return the statecode of the state(s) that is (are) home to the most
 committee chairmen
 *******************************************************************************/
 
-/* Put your SQL for Q9 here */
+SELECT Se.statecode, count(*), Co.chairman, Co.name
+FROM (senators Se JOIN committees Co ON Se.name = Co.chairman)
+GROUP BY Se.statecode
+HAVING count(*) = ( SELECT MAX(num_sen)
+				FROM (	SELECT COUNT(*) as num_sen
+						FROM senators Se, committees Co
+						WHERE Se.name = Co.chairman
+						GROUP BY Se.statecode ) CCCP);
 
 /*******************************************************************************
 Q10 - Return the statecode of the state(s) that are not the home of any
 committee chairmen
 *******************************************************************************/
 
-/* Put your SQL for Q10 here */
+SELECT S.statecode
+FROM states S
+WHERE S.statecode NOT IN (    SELECT Se.statecode
+						FROM senators Se, committees Co
+						WHERE Se.name = Co.chairman
+						GROUP BY Se.statecode);
 
 /*******************************************************************************
 Q11 Find all subcommittes whose chairman is the same as the chairman of its
@@ -93,7 +142,10 @@ the parent committee's chairman, the id of the subcommittee, and name of that
 subcommittee's chairman
 *******************************************************************************/
 
-/*Put your SQL for Q11 here */
+SELECT parent.id, parent.chairman, child.id, child.chairman
+FROM committees child, committees parent
+WHERE child.parent_committee = parent.id AND child.chairman = parent.chairman;
+
 
 /*******************************************************************************
 Q12 - For each subcommittee where the subcommittee’s chairman was born in an
@@ -102,4 +154,8 @@ parent committee, its chairman, the year the chairman was born, the id of the
 submcommittee, it’s chairman and the year the subcommittee chairman was born.
 ********************************************************************************/
 
-/* Put your SQL for Q12 here */
+SELECT parentc.id, parentc.chairman, parents.born, childc.id, childc.chairman, childs.born
+FROM committees childc JOIN senators childs ON childc.chairman=childs.name, committees parentc JOIN senators parents ON parentc.chairman=parents.name
+WHERE childc.parent_committee = parentc.id AND childs.born < parents.born;
+
+
