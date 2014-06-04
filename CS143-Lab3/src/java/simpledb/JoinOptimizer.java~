@@ -231,12 +231,29 @@ public class JoinOptimizer {
             HashMap<String, Double> filterSelectivities, boolean explain)
             throws ParsingException {
 
-        // See the project writeup for some hints as to how this function
-        // should work.
-
-        // some code goes here
-        //Replace the following
-        return joins;
+        PlanCache cache = new PlanCache();
+        Set<LogicalJoinNode> order = new HashSet<LogicalJoinNode>();
+        order.addAll(joins);
+        
+        CostCard cur = new CostCard();
+        
+        for(int i = 1; i <= joins.size(); i++) {
+	  Set<Set<LogicalJoinNode>> subsets = enumerateSubsets(joins, i);
+	  for(Set<LogicalJoinNode> subset : subsets) {
+	    cur.card = Integer.MAX_VALUE;
+	    cur.plan = null;
+	    cur.cost = Double.MAX_VALUE;
+	    for(LogicalJoinNode node : subset) {
+	      CostCard temp = computeCostAndCardOfSubplan(stats, filterSelectivities, node, subset, Double.MAX_VALUE, cache);
+	      if(temp != null && temp.cost < cur.cost)
+		cur = temp;
+	    }
+	    if(cur.plan != null)
+	      cache.addPlan(subset, cur.cost, cur.card, cur.plan);
+	  }
+        }
+                
+        return cache.getOrder(order) == null ? new Vector<LogicalJoinNode> : cache.getOrder(order);
     }
 
     // ===================== Private Methods =================================

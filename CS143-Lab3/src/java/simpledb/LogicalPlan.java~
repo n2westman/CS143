@@ -348,7 +348,11 @@ public class LogicalPlan {
      
         joins = jo.orderJoins(statsMap,filterSelectivities,explain);
 
+        System.out.println("There\n");
+        
         Iterator<LogicalJoinNode> joinIt = joins.iterator();
+        
+        System.out.println("Also here\n");
         
         while (joinIt.hasNext()) {
             LogicalJoinNode lj = joinIt.next();

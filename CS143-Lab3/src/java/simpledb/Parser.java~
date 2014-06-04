@@ -280,8 +280,12 @@ public class Parser {
         Query query = new Query(tId);
         LogicalPlan lp = parseQueryLogicalPlan(tId, s);
         
+        System.out.println("Split the difference\n");
+        
         DbIterator physicalPlan = lp.physicalPlan(tId,
                 TableStats.getStatsMap(), explain);
+                
+        System.out.println("Test this\n");
         query.setPhysicalPlan(physicalPlan);
         query.setLogicalPlan(lp);
 

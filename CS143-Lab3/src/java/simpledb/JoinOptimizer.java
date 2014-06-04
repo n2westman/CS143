@@ -253,7 +253,7 @@ public class JoinOptimizer {
 	  }
         }
                 
-        return cache.getOrder(order);
+        return cache.getOrder(order) == null ? new Vector<LogicalJoinNode>() : cache.getOrder(order);
     }
 
     // ===================== Private Methods =================================
