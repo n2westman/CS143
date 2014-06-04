@@ -1,0 +1,45 @@
+The Life of a Query in SimpleDB
+
+Step 1: simpledb.Parser.main() and simpledb.Parser.start()
+Main is the entry point and calls start, which performs three primary actions:
+
++	Populates the simpleDB catalog from the catalog text file provided by the user as an argument
++	For each table defined in the system catalog, it computes statistics over the data in the table by calling TableStats.computeStatistics()
++	It processes new statements submitted by the user
+
+Step 2: simpledb.Parser.processNextStatement()
+
++	It gets a physical plan for the query by invoking handleQueryStatement()
++	Is subsequently executes the query
+
+Step 3: simpledb.Parser.handleQueryStatement()
+This method facilitates the translation of our zquery object into a plan of actions to run on our database which will yield the proper answer.
+
++	Will construct a new query object
++	Will build a logical plan using parseQueryLogicalPlan()
++	Will then build a physical plan out of the logical plan using LogicalPlan.physicalPlan()
++	Updates operator cardinality
++	Prints ouf the query plan tree!
+
+Step 4: simpledb.Parser.parseQueryLogicalPlan()
+
++ 	Will get all the table names associated in the query and put them in a list; this list comes from the "from" clause.
++	Then parses the where clause to identify filters and joins necessary in the query. Note - will not handle subqueries!
++	Will identify up to one group by field
++	Gets aggregates
+
+
+Step 5: simpledb.LogicalPlan.physicalPlan()
+This step basically gives us an iterator over our query result! The most important function call here.
+
+
++	Builds a map of scans
++	Iterates through all the filters and estimates the selectivity of each filter
++	Walks through the select list and determines the projection order.
++	Walks through the joins, first by ordering the joins by calling orderJoins() and then iteratively joining groups of data.
++	Aggregates and orders the joined, filtered tuples.
++	Then projects and returns the result in the form of an iterator!
+
+Step 6: simpledb.JoinOptimizer.OrderJoin()
+This method uses statistics and predictive modeling to order joins in some way based off the cardinalities and costs of joins
+One of the methods I get to implement in this lab!
